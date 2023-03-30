@@ -15,7 +15,7 @@ This repository is for 2023 Winter Term 2 CPEN 312 Labs.
 *Labs that require student number have a random number*
 
 ## Requirements
----
+
 * Altera DE0-CV board
 * Quartus II (18.1 or newer)
 * NI Multisim
