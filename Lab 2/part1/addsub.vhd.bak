@@ -1,0 +1,36 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity addsub is
+    port (
+        SW7_0    : in  std_logic_vector(7 downto 0);
+        SW9      : in  std_logic;
+        KEY0     : in  std_logic;
+        KEY1     : in  std_logic;
+        LEDR7_0  : out std_logic_vector(7 downto 0);
+        LEDR8    : out std_logic
+    );
+end entity;
+
+architecture rtl of addsub is
+    signal A, B, result : std_logic_vector(7 downto 0);
+    signal op_add      : std_logic;
+    signal op_sub      : std_logic;
+    signal mode        : std_logic;
+
+begin
+    A <= SW7_0 when KEY1 = '1' else A;
+    B <= SW7_0 when KEY0 = '1' else B;
+
+    op_add <= '1' when SW9 = '0' else '0';
+    op_sub <= '1' when SW9 = '1' else '0';
+
+    mode <= op_add when KEY0 = '1' or KEY1 = '1' else mode;
+
+    result <= std_logic_vector(unsigned(A) + unsigned(B)) when op_add = '1' else
+              std_logic_vector(unsigned(A) - unsigned(B));
+
+    LEDR7_0 <= result;
+    LEDR8 <= '1' when mode = op_sub else '0';
+end architecture;

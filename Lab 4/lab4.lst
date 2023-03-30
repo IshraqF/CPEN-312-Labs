@@ -1,0 +1,496 @@
+                  2   $LIST
+0000              4   
+0000              5   ; student number 12345678
+0000              6   N_1 equ 79H
+0000              7   N_2 equ 24H
+0000              8   N_3 equ 30H
+0000              9   N_4 equ 19H
+0000             10   N_5 equ 12H
+0000             11   N_6 equ 02H
+0000             12   N_7 equ 78H
+0000             13   N_8 equ 00H
+0000             14   
+0000             15   BLANK equ 11111111b
+0000             16   
+0000             17   ;HELLO
+0000             18   L_H equ 09H
+0000             19   L_E equ 06H
+0000             20   L_L equ 47H
+0000             21   L_O equ 40H
+0000             22   
+0000             23   ;CPN
+0000             24   L_C equ 46H
+0000             25   L_P equ 0CH
+0000             26   L_N equ 48H
+0000             27   
+0000             28   org 0
+0000 020003      29            ljmp main
+0003             30   
+0003             31   main:
+0003 75817F      32            mov sp, #7fH
+0006 75E800      33            mov LEDRA, #0
+0009 759500      34            mov LEDRB, #0
+000C 758F79      35            mov hex5, #N_1
+000F 758E24      36            mov hex4, #N_2
+0012 759430      37            mov hex3, #N_3
+0015 759319      38            mov hex2, #N_4
+0018 759212      39            mov hex1, #N_5
+001B 759102      40            mov hex0, #N_6
+001E 0203F6      41            ljmp Forever
+0021             42            
+0021             43   DELAY:
+0021 7A5A        44            mov R2, #90
+0023 79FA        45   L2: mov R1, #250
+0025 78FA        46   L1: mov R0, #250
+0027 D8FE        47   L0: djnz R0, L0
+0029 D9FA        48            djnz R1, L1
+002B DAF6        49            djnz R2, L2
+002D 22          50            ret
+002E             51   
+002E             52   case_000:
+002E 758F79      53            mov hex5, #N_1
+0031 758E24      54            mov hex4, #N_2
+0034 759430      55            mov hex3, #N_3
+0037 759319      56            mov hex2, #N_4
+003A 759212      57            mov hex1, #N_5
+003D 759102      58            mov hex0, #N_6
+0040 22          59            ret
+0041             60   
+0041             61   case_001:
+0041 758FFF      62            mov hex5, #BLANK
+0044 758EFF      63            mov hex4, #BLANK
+0047 7594FF      64            mov hex3, #BLANK
+004A 7593FF      65            mov hex2, #BLANK
+004D 759278      66            mov hex1, #N_7
+0050 759100      67            mov hex0, #N_8
+0053 22          68            ret
+0054             69   
+0054             70   case_010:
+0054 758F79      71            mov hex5, #N_1
+0057 758E24      72            mov hex4, #N_2
+005A 759430      73            mov hex3, #N_3
+005D 759319      74            mov hex2, #N_4
+0060 759212      75            mov hex1, #N_5
+0063 759102      76            mov hex0, #N_6
+0066 7C00        77            mov R4, #N_8
+0068 7D78        78            mov R5, #N_7
+006A 30FB27      79            jnb KEY.3, SET_STATE_1
+006D 20EB04      80            jb SWA.3, ScrollLeft
+0070 120097      81            lcall ScrollLeftLong
+0073 22          82            ret
+0074             83            
+0074             84   ScrollLeft:
+0074 120021      85            lcall DELAY
+0077 AE8F        86            mov R6, hex5
+0079 858E8F      87            mov hex5, hex4
+007C 85948E      88            mov hex4, hex3
+007F 859394      89            mov hex3, hex2
+0082 859293      90            mov hex2, hex1
+0085 859192      91            mov hex1, hex0
+0088 8D91        92            mov hex0, R5
+008A EC          93            mov A, R4
+008B FD          94            mov R5, A
+008C EE          95            mov A, R6
+008D FC          96            mov R4, A
+008E 30FB03      97            jnb KEY.3, SET_STATE_1
+0091 020074      98            ljmp ScrollLeft
+0094             99   
+0094            100   SET_STATE_1:
+0094 0203EE     101            ljmp SET_STATE
+0097            102   
+0097            103   ScrollLeftLong:
+0097 120021     104            lcall DELAY
+009A 120021     105            lcall DELAY
+009D AE8F       106            mov R6, hex5
+009F 858E8F     107            mov hex5, hex4
+00A2 85948E     108            mov hex4, hex3
+00A5 859394     109            mov hex3, hex2
+00A8 859293     110            mov hex2, hex1
+00AB 859192     111            mov hex1, hex0
+00AE 8D91       112            mov hex0, R5
+00B0 EC         113            mov A, R4
+00B1 FD         114            mov R5, A
+00B2 EE         115            mov A, R6
+00B3 FC         116            mov R4, A
+00B4 30FBDD     117            jnb KEY.3, SET_STATE_1
+00B7 020097     118            ljmp ScrollLeftLong
+00BA            119   
+00BA            120   case_011:
+00BA 758F79     121            mov hex5, #N_1
+00BD 758E24     122            mov hex4, #N_2
+00C0 759430     123            mov hex3, #N_3
+00C3 759319     124            mov hex2, #N_4
+00C6 759212     125            mov hex1, #N_5
+00C9 759102     126            mov hex0, #N_6
+00CC 7C00       127            mov R4, #N_8
+00CE 7D78       128            mov R5, #N_7
+00D0 30FBC1     129            jnb KEY.3, SET_STATE_1
+00D3 20EB04     130            jb SWA.3, ScrollRight
+00D6 1200FA     131            lcall ScrollRightLong
+00D9 22         132            ret
+00DA            133   
+00DA            134   ScrollRight:
+00DA 120021     135            lcall DELAY
+00DD AE91       136            mov R6, hex0
+00DF 859291     137            mov hex0, hex1
+00E2 859392     138            mov hex1, hex2
+00E5 859493     139            mov hex2, hex3
+00E8 858E94     140            mov hex3, hex4
+00EB 858F8E     141            mov hex4, hex5
+00EE 8C8F       142            mov hex5, R4
+00F0 ED         143            mov A, R5
+00F1 FC         144            mov R4, A
+00F2 EE         145            mov A, R6
+00F3 FD         146            mov R5, A
+00F4 30FB9D     147            jnb KEY.3, SET_STATE_1
+00F7 0200DA     148            ljmp ScrollRight
+00FA            149   
+00FA            150   ScrollRightLong:
+00FA 120021     151            lcall DELAY
+00FD 120021     152            lcall DELAY
+0100 AE91       153            mov R6, hex0
+0102 859291     154            mov hex0, hex1
+0105 859392     155            mov hex1, hex2
+0108 859493     156            mov hex2, hex3
+010B 858E94     157            mov hex3, hex4
+010E 858F8E     158            mov hex4, hex5
+0111 8C8F       159            mov hex5, R4
+0113 ED         160            mov A, R5
+0114 FC         161            mov R4, A
+0115 EE         162            mov A, R6
+0116 FD         163            mov R5, A
+0117 30FB03     164            jnb KEY.3, SET_STATE_2
+011A 0200FA     165            ljmp ScrollRightLong
+011D            166   
+011D            167   SET_STATE_2:
+011D 0203EE     168            ljmp SET_STATE
+0120            169            
+0120            170   case_100:
+0120 758F30     171            mov hex5, #N_3
+0123 758E19     172            mov hex4, #N_4
+0126 759412     173            mov hex3, #N_5
+0129 759302     174            mov hex2, #N_6
+012C 759278     175            mov hex1, #N_7
+012F 759100     176            mov hex0, #N_8
+0132 30FBE8     177            jnb KEY.3, SET_STATE_2
+0135 20EB04     178            jb SWA.3, ShortBlink
+0138 120157     179            lcall LongBlink
+013B 22         180            ret
+013C            181            
+013C            182   ShortBlink:
+013C 120021     183            lcall DELAY
+013F 758FFF     184            mov hex5, #BLANK
+0142 758EFF     185            mov hex4, #BLANK
+0145 7594FF     186            mov hex3, #BLANK
+0148 7593FF     187            mov hex2, #BLANK
+014B 7592FF     188            mov hex1, #BLANK
+014E 7591FF     189            mov hex0, #BLANK
+0151 120021     190            lcall DELAY
+0154 020120     191            ljmp case_100
+0157            192            
+0157            193   LongBlink:
+0157 120021     194            lcall DELAY
+015A 120021     195            lcall DELAY 
+015D 758FFF     196            mov hex5, #BLANK
+0160 758EFF     197            mov hex4, #BLANK
+0163 7594FF     198            mov hex3, #BLANK
+0166 7593FF     199            mov hex2, #BLANK
+0169 7592FF     200            mov hex1, #BLANK
+016C 7591FF     201            mov hex0, #BLANK
+016F 120021     202            lcall DELAY
+0172 120021     203            lcall DELAY
+0175 020120     204            ljmp case_100
+0178            205   
+0178            206   case_101:
+0178 758FFF     207            mov hex5, #BLANK
+017B 758EFF     208            mov hex4, #BLANK
+017E 7594FF     209            mov hex3, #BLANK
+0181 7593FF     210            mov hex2, #BLANK
+0184 7592FF     211            mov hex1, #BLANK
+0187 7591FF     212            mov hex0, #BLANK
+018A 30FB07     213            jnb KEY.3, SET_STATE_N
+018D 20EB07     214            jb SWA.3, ShortAppear
+0190 1201D3     215            lcall LongAppear
+0193 22         216            ret
+0194            217   
+0194            218   SET_STATE_N:
+0194 0203EE     219            ljmp SET_STATE
+0197            220   
+0197            221   ShortAppear:
+0197 120021     222            lcall DELAY
+019A 758F79     223            mov hex5, #N_1
+019D 120021     224            lcall DELAY
+01A0 30FBF1     225            jnb KEY.3, SET_STATE_N
+01A3 758E24     226            mov hex4, #N_2
+01A6 120021     227            lcall DELAY
+01A9 30FBE8     228            jnb KEY.3, SET_STATE_N
+01AC 759430     229            mov hex3, #N_3
+01AF 120021     230            lcall DELAY
+01B2 30FBDF     231            jnb KEY.3, SET_STATE_N
+01B5 759319     232            mov hex2, #N_4
+01B8 120021     233            lcall DELAY
+01BB 30FBD6     234            jnb KEY.3, SET_STATE_N
+01BE 759212     235            mov hex1, #N_5
+01C1 120021     236            lcall DELAY
+01C4 30FBCD     237            jnb KEY.3, SET_STATE_N
+01C7 759102     238            mov hex0, #N_6
+01CA 120021     239            lcall DELAY
+01CD 30FBC4     240            jnb KEY.3, SET_STATE_N
+01D0 020178     241            ljmp case_101
+01D3            242   
+01D3            243   LongAppear:
+01D3 120021     244            lcall DELAY
+01D6 120021     245            lcall DELAY
+01D9 758F79     246            mov hex5, #N_1
+01DC 120021     247            lcall DELAY
+01DF 120021     248            lcall DELAY
+01E2 30FB3F     249            jnb KEY.3, SET_STATE_3
+01E5 758E24     250            mov hex4, #N_2
+01E8 120021     251            lcall DELAY
+01EB 120021     252            lcall DELAY
+01EE 30FB33     253            jnb KEY.3, SET_STATE_3
+01F1 759430     254            mov hex3, #N_3
+01F4 120021     255            lcall DELAY
+01F7 120021     256            lcall DELAY
+01FA 30FB27     257            jnb KEY.3, SET_STATE_3
+01FD 759319     258            mov hex2, #N_4
+0200 120021     259            lcall DELAY
+0203 120021     260            lcall DELAY
+0206 30FB1B     261            jnb KEY.3, SET_STATE_3
+0209 759212     262            mov hex1, #N_5
+020C 120021     263            lcall DELAY
+020F 120021     264            lcall DELAY
+0212 30FB0F     265            jnb KEY.3, SET_STATE_3
+0215 759102     266            mov hex0, #N_6
+0218 120021     267            lcall DELAY
+021B 120021     268            lcall DELAY
+021E 30FB03     269            jnb KEY.3, SET_STATE_3
+0221 020178     270            ljmp case_101
+0224            271            
+0224            272   SET_STATE_3:
+0224 0203EE     273            ljmp SET_STATE
+0227            274   
+0227            275   case_110:
+0227 758F09     276            mov hex5, #L_H
+022A 758E06     277            mov hex4, #L_E
+022D 759447     278            mov hex3, #L_L
+0230 759347     279            mov hex2, #L_L
+0233 759240     280            mov hex1, #L_O
+0236 7591FF     281            mov hex0, #BLANK
+0239 30FBE8     282            jnb KEY.3, SET_STATE_3
+023C 20EB3A     283            jb SWA.3, ShortDelay
+023F 12027F     284            lcall LongDelay
+0242 22         285            ret
+0243            286            
+0243            287   L3:      
+0243 758F79     288            mov hex5, #N_1
+0246 758E24     289            mov hex4, #N_2
+0249 759430     290            mov hex3, #N_3
+024C 759319     291            mov hex2, #N_4
+024F 759212     292            mov hex1, #N_5
+0252 759102     293            mov hex0, #N_6
+0255 30FBCC     294            jnb KEY.3, SET_STATE_3
+0258 20EB2D     295            jb SWA.3, ShortDelay_2
+025B 12028E     296            lcall LongDelay_2
+025E            297            
+025E            298   L4:      
+025E 758F46     299            mov hex5, #L_C
+0261 758E0C     300            mov hex4, #L_P
+0264 759448     301            mov hex3, #L_N
+0267 759330     302            mov hex2, #N_3
+026A 759279     303            mov hex1, #N_1
+026D 759124     304            mov hex0, #N_2
+0270 30FBB1     305            jnb KEY.3, SET_STATE_3
+0273 20EB21     306            jb SWA.3, ShortDelay_3
+0276 12029D     307            lcall LongDelay_3
+0279            308            
+0279            309   ShortDelay:
+0279 120021     310            lcall DELAY
+027C 020243     311            ljmp L3
+027F            312            
+027F            313   LongDelay:
+027F 120021     314            lcall DELAY
+0282 120021     315            lcall DELAY
+0285 020243     316            ljmp L3
+0288            317            
+0288            318   ShortDelay_2:
+0288 120021     319            lcall DELAY
+028B 02025E     320            ljmp L4
+028E            321            
+028E            322   LongDelay_2:
+028E 120021     323            lcall DELAY
+0291 120021     324            lcall DELAY
+0294 02025E     325            ljmp L4
+0297            326   
+0297            327   ShortDelay_3:
+0297 120021     328            lcall DELAY
+029A 020227     329            ljmp case_110
+029D            330            
+029D            331   LongDelay_3:
+029D 120021     332            lcall DELAY
+02A0 120021     333            lcall DELAY
+02A3 020227     334            ljmp case_110
+02A6            335   
+02A6            336   case_111:
+02A6 758FFF     337            mov hex5, #BLANK
+02A9 758EFF     338            mov hex4, #BLANK
+02AC 7594FF     339            mov hex3, #BLANK
+02AF 7593FF     340            mov hex2, #BLANK
+02B2 7592FF     341            mov hex1, #BLANK
+02B5 7591FF     342            mov hex0, #BLANK
+02B8 30FB07     343            jnb KEY.3, SET_STATE_4
+02BB 20EC07     344            jb SWA.4, MostSigRand
+02BE 12035B     345            lcall LeastSigRand
+02C1 22         346            ret
+02C2            347   
+02C2            348   SET_STATE_4:
+02C2 0203EE     349            ljmp SET_STATE
+02C5            350   
+02C5            351   MostSigRand:
+02C5 20EB03     352            jb SWA.3, SMostRand
+02C8 120307     353            lcall LMostRand
+02CB            354   
+02CB            355   SMostRand:
+02CB 120021     356            lcall DELAY
+02CE 759479     357            mov hex3, #N_1
+02D1 120021     358            lcall DELAY
+02D4 30FBEB     359            jnb KEY.3, SET_STATE_4
+02D7 759124     360            mov hex0, #N_2
+02DA 120021     361            lcall DELAY
+02DD 30FBE2     362            jnb KEY.3, SET_STATE_4
+02E0 759330     363            mov hex2, #N_3
+02E3 120021     364            lcall DELAY
+02E6 30FBD9     365            jnb KEY.3, SET_STATE_4
+02E9 758E19     366            mov hex4, #N_4
+02EC 120021     367            lcall DELAY
+02EF 30FBD0     368            jnb KEY.3, SET_STATE_4
+02F2 759212     369            mov hex1, #N_5
+02F5 120021     370            lcall DELAY
+02F8 30FBC7     371            jnb KEY.3, SET_STATE_4
+02FB 758F02     372            mov hex5, #N_6
+02FE 120021     373            lcall DELAY
+0301 30FBBE     374            jnb KEY.3, SET_STATE_4
+0304 0202A6     375            ljmp case_111
+0307            376   
+0307            377   LMostRand:
+0307 120021     378            lcall DELAY
+030A 120021     379            lcall DELAY
+030D 759479     380            mov hex3, #N_1
+0310 120021     381            lcall DELAY
+0313 120021     382            lcall DELAY
+0316 30FBA9     383            jnb KEY.3, SET_STATE_4
+0319 759124     384            mov hex0, #N_2
+031C 120021     385            lcall DELAY
+031F 120021     386            lcall DELAY
+0322 30FB9D     387            jnb KEY.3, SET_STATE_4
+0325 759330     388            mov hex2, #N_3
+0328 120021     389            lcall DELAY
+032B 120021     390            lcall DELAY
+032E 30FB91     391            jnb KEY.3, SET_STATE_4
+0331 758E19     392            mov hex4, #N_4
+0334 120021     393            lcall DELAY
+0337 120021     394            lcall DELAY
+033A 30FB85     395            jnb KEY.3, SET_STATE_4
+033D 759212     396            mov hex1, #N_5
+0340 120021     397            lcall DELAY
+0343 120021     398            lcall DELAY
+0346 30FB0F     399            jnb KEY.3, SET_STATE_M
+0349 758F02     400            mov hex5, #N_6
+034C 120021     401            lcall DELAY
+034F 120021     402            lcall DELAY
+0352 30FB03     403            jnb KEY.3, SET_STATE_M
+0355 0202A6     404            ljmp case_111
+0358            405   
+0358            406   SET_STATE_M:
+0358 0203EE     407            ljmp SET_STATE
+035B            408   
+035B            409   LeastSigRand:
+035B 20EB03     410            jb SWA.3, SLeastRand
+035E 12039D     411            lcall LLeastRand
+0361            412   
+0361            413   SLeastRand:
+0361 120021     414            lcall DELAY
+0364 758E30     415            mov hex4, #N_3
+0367 120021     416            lcall DELAY
+036A 30FBEB     417            jnb KEY.3, SET_STATE_M
+036D 759119     418            mov hex0, #N_4
+0370 120021     419            lcall DELAY
+0373 30FBE2     420            jnb KEY.3, SET_STATE_M
+0376 759412     421            mov hex3, #N_5
+0379 120021     422            lcall DELAY
+037C 30FBD9     423            jnb KEY.3, SET_STATE_M
+037F 758F02     424            mov hex5, #N_6
+0382 120021     425            lcall DELAY
+0385 30FBD0     426            jnb KEY.3, SET_STATE_M
+0388 759278     427            mov hex1, #N_7
+038B 120021     428            lcall DELAY
+038E 30FBC7     429            jnb KEY.3, SET_STATE_M
+0391 759300     430            mov hex2, #N_8
+0394 120021     431            lcall DELAY
+0397 30FBBE     432            jnb KEY.3, SET_STATE_M
+039A 0202A6     433            ljmp case_111
+039D            434   
+039D            435   LLeastRand:
+039D 120021     436            lcall DELAY
+03A0 120021     437            lcall DELAY
+03A3 758E30     438            mov hex4, #N_3
+03A6 120021     439            lcall DELAY
+03A9 120021     440            lcall DELAY
+03AC 30FB3F     441            jnb KEY.3, SET_STATE
+03AF 759119     442            mov hex0, #N_4
+03B2 120021     443            lcall DELAY
+03B5 120021     444            lcall DELAY
+03B8 30FB33     445            jnb KEY.3, SET_STATE
+03BB 759412     446            mov hex3, #N_5
+03BE 120021     447            lcall DELAY
+03C1 120021     448            lcall DELAY
+03C4 30FB27     449            jnb KEY.3, SET_STATE
+03C7 758F02     450            mov hex5, #N_6
+03CA 120021     451            lcall DELAY
+03CD 120021     452            lcall DELAY
+03D0 30FB1B     453            jnb KEY.3, SET_STATE
+03D3 759278     454            mov hex1, #N_7
+03D6 120021     455            lcall DELAY
+03D9 120021     456            lcall DELAY
+03DC 30FB0F     457            jnb KEY.3, SET_STATE
+03DF 759300     458            mov hex2, #N_8
+03E2 120021     459            lcall DELAY
+03E5 120021     460            lcall DELAY
+03E8 30FB03     461            jnb KEY.3, SET_STATE
+03EB 0202A6     462            ljmp case_111
+03EE            463   
+03EE            464   SET_STATE:
+03EE E5E8       465            mov A, SWA
+03F0 5407       466            anl A, #00000111B
+03F2 FB         467            mov R3, A
+03F3 0203F6     468            ljmp Forever 
+03F6            469   
+03F6            470   Forever:
+03F6 30FBF5     471            jnb KEY.3, SET_STATE
+03F9 8BE8       472            mov LEDRA, R3
+03FB            473   Label0:
+03FB BB0003     474            cjne R3, #00000000B, Label1
+03FE 12002E     475            lcall case_000
+0401            476   Label1:
+0401 BB0103     477            cjne R3, #00000001B, Label2
+0404 120041     478            lcall case_001
+0407            479   Label2:
+0407 BB0203     480            cjne R3, #00000010B, Label3
+040A 120054     481            lcall case_010
+040D            482   Label3:
+040D BB0303     483            cjne R3, #00000011B, Label4
+0410 1200BA     484            lcall case_011
+0413            485   Label4:
+0413 B40403     486            cjne A, #00000100B, Label5
+0416 120120     487            lcall case_100
+0419            488   Label5:
+0419 B40503     489            cjne A, #00000101B, Label6
+041C 120178     490            lcall case_101
+041F            491   Label6:
+041F B40603     492            cjne A, #00000110B, Label7
+0422 120227     493            lcall case_110
+0425            494   Label7:
+0425 B407CE     495            cjne A, #00000111B, Forever
+0428 1202A6     496            lcall case_111
+042B            497   
+042B            498   END      
